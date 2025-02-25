@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import make_interp_spline
 
+CLEMSON_CORDS = (34.681814, -82.862603)
+
 # The bot class is used to send messages from groupme and get weather data
 class bot:
 
@@ -37,8 +39,8 @@ class bot:
     def get_weather(self):
         messageURL = self.open_weather_base_url
         params = {
-            "lat": 34.681814,
-            "lon": -82.862603,
+            "lat": CLEMSON_CORDS[0],
+            "lon": CLEMSON_CORDS[1],
             "appid": self.open_weather_key,
             "units": "imperial",
             "exclude": ["current", "minutely"],
@@ -53,7 +55,6 @@ class bot:
         plt.plot(x, windData)
         plt.plot(x, gustData)
         spl = make_interp_spline(x, windData, k=3)
-        y_smooth = spl(x)f
 
         plt.title("Wind data over the next 24 hours in Clemson, SC")
         plt.ylabel("Wind speed (MPH)")
@@ -66,7 +67,7 @@ class bot:
         url = "https://image.groupme.com/pictures"
         headers = {
             "X-Access-Token": self.groupme_key,
-            "Content-Type": "image/png",  # Adjust for PNG, etc.
+            "Content-Type": "image/png",
         }
         with open(image_path, "rb") as image_file:
             response = requests.post(url, headers=headers, data=image_file)
